@@ -1,0 +1,85 @@
+{%extends 'base.html'%}
+
+{%block main_block%}
+
+<div class="container">
+  <div class="w-50 mx-auto p-5">
+   <form action="">
+      <select name="category" id="" class="form-select" onchange="this.form.submit()">
+        <option value="all" {%if selected == 'all'%} selected {%endif%}>all</option>
+        <option value="personal" {%if selected == 'personal'%} selected {%endif%}>personal</option>
+        <option value="business" {%if selected == 'business'%} selected {%endif%}>business</option>
+      </select>
+      
+  </form>
+
+  <form action="">
+    <input type="text" placeholder="enter key word" name="search_text">
+    <button type="submit">search</button>
+  </form>
+
+  </div>
+</div>
+
+ <div class="container">
+    <div class="row">
+        {%for t in tasks%}
+        <div class="col-4">
+            <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+            <div class="card-header d-flex justify-content-between">
+                <div> {{t.user}}</div>
+                <div>
+                    {%if t.status == 'pending'%}
+
+                    <div class="spinner-grow text-danger" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+
+                    {%endif%}
+
+                    {%if t.status == 'in-progress'%}
+
+                    <div class="spinner-grow text-warning" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+
+                    {%endif%}
+
+                    {%if t.status == 'done'%}
+
+                    <div class="spinner-grow text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+
+                    {%endif%}
+                    
+                    
+                    
+                    
+                    
+                    
+                    {{t.status}}</div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{t.title}}</h5>
+                <p class="card-text">{{t.description}}</p>
+            </div>
+            <div class="card-footer text-body-white">
+              <!-- <div>category:{{t.category}}</div> -->
+                <div>created date: {{t.created_date|date}}</div>
+               <div> due date: {{t.due_date|date}}</div>
+
+               <div>last updated{{t.updated_date|date}}</div>
+               <a href="{%url 'task-update' t.id%}">view</a>
+
+               <a href="{%url 'task-delete' t.id%}">remove</a>
+
+
+            </div>
+            </div>
+        
+        </div>
+        {%endfor%}
+</div>
+</div>
+{%endblock%}
