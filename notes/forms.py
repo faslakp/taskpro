@@ -12,7 +12,7 @@ class TaskForm(forms.ModelForm):
         
         # fields="__all__"
         # fields=['titile','description',...]
-        exclude=("created_date","status","updated_date")
+        exclude=("created_date","status","updated_date","user")
 
         # for styling ModelForm
         widgets={
@@ -21,7 +21,7 @@ class TaskForm(forms.ModelForm):
             "due_date":forms.DateInput(attrs={"class":"form-control","type":"date"}),
             "category":forms.Select(attrs={"class":"form-control form-select"}),
             
-            "user":forms.TextInput(attrs={"class":"form-control"})
+            # "user":forms.TextInput(attrs={"class":"form-control"})
         }
 
 
@@ -50,8 +50,6 @@ class SignInForm(forms.Form):
     username=forms.CharField(widget=forms.TextInput(attrs={"class":"form-control"}))
 
     password=forms.CharField(widget=forms.PasswordInput(attrs={"class":"form-control"}))
-
-
 
 
 

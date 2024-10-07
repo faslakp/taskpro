@@ -21,6 +21,8 @@ class TaskCreateView(View):
         form_instance=TaskForm(request.POST)
 
         if form_instance.is_valid():
+
+            form_instance.instance.user=request.user
             # data=form_instance.cleaned_data
             # Task.objects.create
 
@@ -166,6 +168,8 @@ class TaskSummaryView(View):
     
 
 from django.contrib.auth.models import User
+
+from django.contrib.auth import authenticate,login,logout
     
 
 class SignUpView(View):
@@ -187,7 +191,7 @@ class SignUpView(View):
 
             User.objects.create_user(**data)
 
-            return redirect("task-list")
+            return redirect("signin")
         
         else:
 
@@ -202,6 +206,44 @@ class SignInView(View):
         form_instance=SignInForm()
 
         return render(request,self.template_name,{"form":form_instance})
+    
+    def post(self,request,*args,**kwargs):
+
+        #initialize form with request.post
+
+        form_instance=SignInForm(request.POST)
+
+        # check form_instance is valid?
+
+        if form_instance.is_valid():
+
+            #extract userneame and password
+
+            uname=form_instance.cleaned_data.get("username")
+            pword=form_instance.cleaned_data.get("password")
+
+            #authenticate 
+
+            user_object=authenticate(request,username=uname,password=pword)
+
+            if user_object:
+
+                login(request,user_object)
+
+                return redirect("task-list")
+        return render(request,self.template_name,{"form":form_instance})
+    
+class SignOutView(View):
+
+    def get(self,request,*args,**kwargs):
+
+        logout(request)
+
+        return redirect("signin")
+    
+    
+
+
     
     
         
