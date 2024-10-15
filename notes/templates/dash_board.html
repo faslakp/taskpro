@@ -1,0 +1,73 @@
+{%extends 'base.html'%}
+
+{%block main_block%}
+
+<h1>dashboard</h1>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-6"> 
+            <h3>category summary</h3>           
+            <canvas id="myChart"></canvas>
+        </div>
+
+        <div class="col-6">
+            <h3>status summary</h3>
+            <canvas id="statusChart"></canvas>
+        </div>
+
+    </div>
+</div>
+
+{%endblock%}
+
+{%block script_block%}
+<script>
+const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: {
+      labels: [{%for cs in category_summary%}'{{cs.category}}',{%endfor%}],
+      datasets: [{
+        label: '# of Votes',
+        data: [{%for cs in category_summary%}{{cs.cat_count}},{%endfor%}],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+
+// status summary
+const ctx1 = document.getElementById('statusChart');
+
+new Chart(ctx1, {
+  type: 'doughnut',
+  data: {
+    labels: [{%for cs in status_summary%}'{{cs.status}}',{%endfor%}],
+    datasets: [{
+      label: '# of Votes',
+      data: [{%for cs in status_summary%}{{cs.sts_count}},{%endfor%}],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+
+</script>
+{%endblock%}
